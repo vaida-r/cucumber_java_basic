@@ -9,17 +9,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.File;
 import java.net.MalformedURLException;
+import java.util.concurrent.TimeUnit;
 
 public class Hooks {
     public static WebDriver driver;
-    static String libWithDriversLocation = System.getProperty("user.dir") + "\\lib\\";
+    static String libWithDriversLocation = System.getProperty("user.dir") + File.separator + "lib" + File.separator;
 
     @Before
     public void openBrowser() throws MalformedURLException {
-        System.setProperty("webdriver.chrome.driver", libWithDriversLocation + "chromedriver.exe");
+        if (System.getProperty("os.name").contains("Mac") || System.getProperty("os.name").contains("mac"))
+            System.setProperty("webdriver.chrome.driver", libWithDriversLocation + "chromedriver");
+        else
+            System.setProperty("webdriver.chrome.driver", libWithDriversLocation + "chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().deleteAllCookies();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @After

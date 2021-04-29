@@ -1,6 +1,7 @@
 .idea/
 out/
 target/
+output/
 cucumber-report/
 phantomjsdriver.log
 *.jpg
