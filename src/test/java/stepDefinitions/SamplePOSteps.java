@@ -1,5 +1,6 @@
 package stepDefinitions;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -12,6 +13,7 @@ import pages_sample.*;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SamplePOSteps {
     private WebDriver driver;
@@ -53,5 +55,16 @@ public class SamplePOSteps {
     public void iEnterValues(Map<String, String> valuesToEnter) throws Throwable {
         agePage.enterName(valuesToEnter.get("name"));
         agePage.enterAge(valuesToEnter.get("age"));
+    }
+
+    @Then("^I see error: \"([^\"]*)\" using PO$")
+    public void iSeeErrorUsingPO(String mess) throws Throwable {
+        agePage.checkErrorMessage(mess);
+
+    }
+
+    @And("^I remain in age page using PO$")
+    public void iRemainInAgePageUsingPO() throws Throwable{
+        assertEquals(agePage.getPageUrl(),driver.getCurrentUrl());
     }
 }

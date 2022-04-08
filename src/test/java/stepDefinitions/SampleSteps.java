@@ -142,9 +142,11 @@ public class SampleSteps {
     }
 
     @And("^I enter feedback age: (\\d+)$")
-    public void iEnterFeedbackAgeAge(int age) throws Throwable {
-        driver.findElement(By.id("fb_age")).sendKeys(String.valueOf(age));
+    public void iEnterFeedbackAgeAge(String age) throws Throwable {
+        //driver.findElement(By.id("fb_age")).sendKeys(String.valueOf(age));
+        driver.findElement(By.id("fb_age")).sendKeys(age);
     }
+
 
     @Then("^click Send$")
     public void clickSend() throws Throwable{
@@ -162,4 +164,40 @@ public class SampleSteps {
     }
 
 
+    @Given("^I am on feedback page$")
+    public void iAmOnFeedbackPage() {
+        driver.get("https://kristinek.github.io/site/tasks/provide_feedback");
+    }
+
+
+    @When("^I select feedback languages$")
+    public void iSelectFeedbackLanguages(List<String> languages) {
+        for (String language: languages){
+            driver.findElement(By.xpath("//input[@class='w3-check' and @value='"+language+"']")).click();     // it can also be By.xpath("//input[@value='"+language+"']")
+        }
+
+
+
+    }
+
+    @Then("^I can see languages \"([^\"]*)\" in feedback check$")
+    public void iCanSeeLanguagesInFeedbackCheck(String language) throws Throwable {
+        assertEquals(language, driver.findElement(By.id("language")).getText());
+    }
+
+
+    @When("^I enter person values:$")
+    public void iEnterPersonValues(Map<String, String> person) throws Throwable{
+        if(person.containsKey("name")) {
+            iEnterFeedbackName(person.get("name"));
+        }
+        iEnterFeedbackAgeAge(person.get("age"));
+        driver.findElement(By.xpath("//input[@value='" + person.get("genre") + "']")).click();
+
+    }
+
+    @And("^I can see genre \"([^\"]*)\" in feedback$")
+    public void iCanSeeGenreInFeedback(String genre) throws Throwable {
+        assertEquals(genre, driver.findElement(By.id("gender")).getText());
+    }
 }
